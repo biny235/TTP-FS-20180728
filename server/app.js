@@ -1,7 +1,18 @@
 const express = require('express');
 const path = require('path')
 const app = express();
+const db = require('./db')
 
+const config = '../config.json';
+
+process.env = Object.assign(process.env, config);
+
+app.use(require('body-parser').json())
+
+db.syncAndSeed()
+  .then(()=> console.log('seeded'))
+
+app.use('/', require('./routes'))
 app.use('/', express.static(path.join(__dirname, '../dist')))
 
 app.get('/', (req, res, next) => {
