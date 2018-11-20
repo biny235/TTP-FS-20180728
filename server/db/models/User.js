@@ -23,7 +23,7 @@ const User = conn.define('user', {
     allowNull: false
   },
   balance: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.DECIMAL,
     defaultValue: 5000
   }
 });
