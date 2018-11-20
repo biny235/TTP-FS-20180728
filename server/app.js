@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path')
 const app = express();
-const db = require('./db')
-
-const config = '../config.json';
-
+const config = require('../config.json');
 process.env = Object.assign(process.env, config);
+
+const db = require('./db');
+
+
 
 app.use(require('body-parser').json())
 

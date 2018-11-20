@@ -6,7 +6,7 @@ router.post('/signup', (req, res, next)=>{
   const { password } = req.body
   User.create(req.body)
     .then(user => {
-      const credentials = { username: user.username, password }
+      const credentials = { email: user.email, password }
       return User.authenticate(credentials)
     })
     .then(token => res.send(token))
