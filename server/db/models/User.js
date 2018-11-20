@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
 const secret = process.env.SECRET;
 
-
 const User = conn.define('user', {
   id: {
     type: Sequelize.UUID,
@@ -24,7 +23,7 @@ const User = conn.define('user', {
     allowNull: false
   },
   balance: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     defaultValue: 5000
   }
 });
