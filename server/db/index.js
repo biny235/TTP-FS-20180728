@@ -7,17 +7,13 @@ User.hasMany(Transaction)
 Transaction.belongsTo(User)
 
 
-
-
-
-
 const syncAndSeed = ()=>{
   return conn.sync({force: true})
 }
 
 module.exports = {
   syncAndSeed,
-  models:{
+  models: {
     User,
     Transaction
   }
