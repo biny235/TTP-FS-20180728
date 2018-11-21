@@ -15,10 +15,17 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
 
-  User.authenticate(req.body)
+  User.authenticate(req.body.user)
     .then(token => res.send(token))
     .catch(next)
 
+})
+
+router.get('/', (req, res, next)=>{
+  console.log(req.headers.token)
+  User.exchangeToken(req.headers.token)
+    .then(user => res.send(user))
+    .catch(next)
 })
 
 router.get('/stocks', (req, res, next) => {

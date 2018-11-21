@@ -47,7 +47,6 @@ User.prototype.validatePassword = function (password){
 
 User.authenticate = function (user){
   const { email, password } = user;
-  console.log(user)
   return this.findOne({ where: {email} })
     .then(user => {
       if(!user.validatePassword(password)) throw {status: 401, message: 'Invalid Password'}
@@ -55,6 +54,22 @@ User.authenticate = function (user){
     })
 }
 
+User.exchangeToken = function(token){
+  try{
+    const id = jwt.decode(token, secret).id
+    return this.findByPk(id, {
+      include: [{model: conn.models.transaction}],
+      attributes: {exclude: ['password']}
+    })
+    .then(user => {
+      if(user) return user
+      throw "error"
+    })
+  }
+  catch(e){
+    return Promise.reject({ status: 401 })
+  }
+}
 
 
 module.exports = User

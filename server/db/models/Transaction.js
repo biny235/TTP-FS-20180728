@@ -14,6 +14,9 @@ const Transaction = conn.define('transaction', {
   },
   price: {
     type: Sequelize.DECIMAL
+  },
+  ticker: {
+    type: Sequelize.STRING
   }
 })
 
