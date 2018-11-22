@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { buyStock } from '../store';
 import axios from 'axios';
 
+
 class BuyForm extends React.Component{
   constructor(){
     super()
@@ -26,17 +27,22 @@ class BuyForm extends React.Component{
     axios.get(`/api/stock/quote/${ticker}`)
       .then(res => res.data)
       .then(info => {
-        this.setState({price: info.iexRealtimePrice})
+        this.setState({ticker: info.symbol, price: info.latestPrice})
       })
       .catch(err => console.log(err))
   }
 
   onClick(){
     this.props.buyStock(this.state)
+    this.setState({
+      ticker: '',
+      qty: 0,
+      price: 0
+    })
   }
 
   render(){
-    const { price, qty } = this.state;
+    const { price, qty, ticker } = this.state;
     const { onChange, onClick } = this;
     const { balance } = this.props;
     const canAfford = balance > (price * qty);
@@ -44,15 +50,23 @@ class BuyForm extends React.Component{
       <div className='buy-form-container'>
         <div className='form-row'>
           <div className='col'>
-            <input className='form-control' placeholder='Symbol' name='ticker' onChange={onChange}/>
+            <input className='form-control' value={ticker} placeholder='Symbol' name='ticker' onChange={onChange}/>
           </div>
           <div className='col-form-label buy-form-label'>
-            <label>Current Price: ${price.toFixed(2)}</label>
+            <label>Current Price: ${(price * 1).toFixed(2)}</label>
           </div>
         </div>
         <div className='form-row'>
           <div className='col'>
-            <input className='form-control' placeholder='Qty' name='qty' onChange={onChange}/>
+            <input 
+            className='form-control' 
+            type='number' 
+            min='1'
+            step='1'
+            value={qty} 
+            placeholder='Qty' 
+            name='qty' 
+            onChange={onChange}/>
           </div>
           <div className='col-form-label buy-form-label'> 
             <label>Total Price: ${(price * qty).toFixed(2)}</label>
@@ -63,7 +77,7 @@ class BuyForm extends React.Component{
           <div className='col'> 
               <button 
               className={`btn btn-block ${canAfford ? 'btn-success' : 'btn-danger'}`} 
-              disabled={!canAfford}
+              disabled={!ticker || qty <= 0 || !canAfford}
               onClick={onClick}
               >
                 {canAfford ? 'Buy' : 'Low Balance'}

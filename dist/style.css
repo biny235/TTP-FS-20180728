@@ -1,11 +1,29 @@
-.buy-form-container{
-  max-width: 50%;
+.buy-form{
+  padding: 10px;
+	border-left: .5px solid lightgray;
 }
 
+.buy-form h4{
+  text-align: left;
+}
+
+
 .buy-form-label{
-  min-width: 28%;
+  min-width: 30%;
+  text-align: right;
 }
 
 .dashboard{
   display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.container{
+  padding-top: 7%;
+}
+
+.stock-row{
+  display: grid;
+  grid-template-columns: 1fr 1.5fr .7fr 1fr;
+  border-bottom: 1px solid lightgray;
 }

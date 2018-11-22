@@ -5,7 +5,10 @@ const { auth } = require('../auth')
 router.get('/quote/:ticker', (req, res, next)=>{
   const { ticker } = req.params
   axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/quote`)
-    .then(res => res.data)
+    .then(res => {
+      if(res.status !== 200) throw {status: 404, message: 'Stock not found'}
+      return res.data
+    })
     .then(quote => res.send(quote))
     .catch(next)
 });

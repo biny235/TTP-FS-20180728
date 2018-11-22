@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 
 import BuyForm from './BuyForm';
+import Portfolio from './Portfolio';
 
 class Dashboard extends React.Component{
   constructor(){
@@ -13,8 +14,13 @@ class Dashboard extends React.Component{
     const { balance } = this.props
     return(
       <div className='dashboard'>
-        <h4>{balance}</h4>
-        <BuyForm />
+        <div>
+          <Portfolio />
+        </div>
+        <div className='buy-form'> 
+          <h4>Current Balance: ${balance.toFixed(2)}</h4>
+          <BuyForm />
+        </div>
       </div>)
   }
 
@@ -22,7 +28,7 @@ class Dashboard extends React.Component{
 
 const mapStateToProps = ({user}) => {
   return{
-    balance: user.balance
+    balance: user.balance * 1
   }
 }
 
