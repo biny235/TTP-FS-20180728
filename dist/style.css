@@ -22,8 +22,48 @@
   padding-top: 7%;
 }
 
+.portfolio{
+  padding: 10px
+}
+
 .stock-row{
   display: grid;
   grid-template-columns: 1fr 1.5fr .7fr 1fr;
   border-bottom: 1px solid lightgray;
+}
+
+.loss{
+  color: red;
+  transition: color 1s ease-in-out;
+}
+.gain{
+  color: rgb(11, 80, 11);
+  transition: color 1s ease-in-out;
+}
+.default{
+  color: gray;
+  transition: color 1s ease-in-out;
+}
+
+i {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.arrow-loss {
+  transform: rotate(45deg);
+  border-color: red;
+}
+
+
+.arrow-gain {
+  transform: rotate(-135deg);
+  border-color: rgb(11, 80, 11);
+}
+
+.arrow-default {
+  transform: rotate(45deg);
+  border-color: grey;
 }

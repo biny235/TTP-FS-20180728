@@ -23,10 +23,15 @@ router.post('/buy', auth, (req, res, next)=>{
     .catch(next)
 });
 
-router.post('/sellorder', (req, res, next)=>{
-  //takes {symbol, qty, currentPrice, total}
-  res.send('to get a quote')
-});
+router.get('/openingprice/:ticker', (req, res, next)=>{
+  const { ticker } = req.params
+  axios.get(`https://api.iextrading.com/1.0/stock/${ticker}/ohlc`)
+    .then(res => res.data)
+    .then(stock => {
+      res.send({openingPrice: stock.open.price})
+    })
+    .catch(next)
+})
 
 
 module.exports = router;
