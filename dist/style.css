@@ -1,0 +1,11 @@
+.buy-form-container{
+  max-width: 50%;
+}
+
+.buy-form-label{
+  min-width: 28%;
+}
+
+.dashboard{
+  display: grid;
+}

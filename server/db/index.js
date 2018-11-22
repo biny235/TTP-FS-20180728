@@ -9,6 +9,12 @@ Transaction.belongsTo(User)
 
 const syncAndSeed = ()=>{
   return conn.sync({force: true})
+    .then(() => User.create({
+      email: 'test@test.com',
+      password: 'password',
+      firstName: 'test',
+      lastName: 'test'
+    }))
 }
 
 module.exports = {

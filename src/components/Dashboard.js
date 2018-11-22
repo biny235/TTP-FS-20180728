@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import BuyForm from './BuyForm';
 
 class Dashboard extends React.Component{
   constructor(){
@@ -9,9 +10,20 @@ class Dashboard extends React.Component{
 
 
   render(){
-    return(<hr />)
+    const { balance } = this.props
+    return(
+      <div className='dashboard'>
+        <h4>{balance}</h4>
+        <BuyForm />
+      </div>)
   }
 
 }
 
-export default connect()(Dashboard)
+const mapStateToProps = ({user}) => {
+  return{
+    balance: user.balance
+  }
+}
+
+export default connect(mapStateToProps)(Dashboard)

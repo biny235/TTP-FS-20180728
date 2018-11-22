@@ -1,4 +1,5 @@
 const conn = require('../conn');
+const Transaction = require('./Transaction');
 const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 const jwt = require('jwt-simple');
@@ -10,6 +11,17 @@ const User = conn.define('user', {
     defaultValue: Sequelize.UUIDV4,
     primaryKey: true
   },
+
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+
   email: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -18,10 +30,12 @@ const User = conn.define('user', {
       isEmail: true
     },
   },
+
   password: {
     type: Sequelize.STRING,
     allowNull: false
   },
+
   balance: {
     type: Sequelize.DECIMAL,
     defaultValue: 5000
@@ -69,6 +83,29 @@ User.exchangeToken = function(token){
   catch(e){
     return Promise.reject({ status: 401 })
   }
+}
+
+User.prototype.addTransaction = function(transaction){
+  let _transaction
+  return Transaction.create(Object.assign(transaction, {userId: this.id}))
+    .then(transaction => {
+      if(transaction.type = 'BUY'){
+        this.balance -= transaction.qty * (transaction.price * 1)
+      }else if(transaction.type = 'SELL'){
+        this.balance += transaction.qty * (transaction.price * 1)
+      }
+
+      _transaction = transaction
+      return this.save()
+    })
+    .then(()=>{
+      return Object.assign(transaction, {balance: this.getBalance()})
+    })
+
+}
+
+User.prototype.getBalance = function(){
+  return this.balance
 }
 
 
