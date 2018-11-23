@@ -11,10 +11,11 @@ class Dashboard extends React.Component{
 
 
   render(){
-    const { balance } = this.props
+    const { balance, portfolioBalance } = this.props
     return(
       <div className='dashboard'>
         <div>
+          <h4>Portfolio: (${portfolioBalance.toFixed(2)})</h4>
           <Portfolio />
         </div>
         <div className='buy-form'> 
@@ -26,9 +27,14 @@ class Dashboard extends React.Component{
 
 }
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = ({user, stocks}) => {
+  const portfolioBalance = stocks.reduce((ttl, stock)=>{
+    return ttl += stock.totalPrice
+  },0)
+
   return{
-    balance: user.balance * 1
+    balance: user.balance * 1,
+    portfolioBalance
   }
 }
 

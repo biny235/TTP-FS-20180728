@@ -2,6 +2,7 @@ import {createStore, applyMiddlware, combineReducers, applyMiddleware } from 're
 import axios from 'axios';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import socket from './sockets';
 
 
@@ -42,16 +43,16 @@ export const checkUser = dispatch => {
 }
 
 
-const userReducer = (state = {}, action)=>{
+const userReducer = (user = {}, action)=>{
   switch(action.type){
     case LOGIN:
       return action.user;
     case LOGOUT:
       return {};
     case UPDATE_BALANCE:
-      return Object.assign(state, { balance: action.balance })
+      return Object.assign({}, user, { balance: action.transaction.balance })
     default:
-      return state
+      return user
   }
 }
 
@@ -64,7 +65,7 @@ const BUY_STOCK = 'BUY_STOCK';
 export const getTransactions = dispatch => {
   axios.get(`/api/user/transactions`)
     .then(res => res.data)
-    .then(transactions => {
+    .then(transactions => { 
       dispatch({type: GET_TRANSACTIONS, transactions})
     })
 }
@@ -74,20 +75,9 @@ export const buyStock = stock => {
     axios.post(`/api/stock/buy`, stock)
       .then(res => res.data)
       .then(transaction => {
-        dispatch(getTransactions)
-        dispatch({type: UPDATE_BALANCE, balance: transaction.balance})
+        dispatch({type: UPDATE_BALANCE, transaction})
+        dispatch({type: BUY_STOCK, stock: transaction})
       })
-  }
-}
-
-
-
-const transactionReducer = (state = [], action) => {
-  switch (action.type) {
-    case GET_TRANSACTIONS:
-      return action.transactions
-    default:
-      return []
   }
 }
 
@@ -105,42 +95,70 @@ const getOpeningPrice = (_stock) => {
     })
 }
 
-const stockReducer = (state = [], action) =>{
+const stockReducer = (stocks = [], action) =>{
   switch(action.type){
     case GET_TRANSACTIONS: 
       let stockArr =[]
       // ADD ALL THE TOTALS FOR ALL THE TRANSACTIONS
-      const stocksObj = action.transactions.reduce((memo, transaction)=>{
+      const transactions = action.transactions
+      const stocksObj = transactions.reduce((memo, transaction)=>{
         if(!memo[transaction.ticker]) memo[transaction.ticker] = {qty:0, totalPrice: 0, ticker: transaction.ticker};
         memo[transaction.ticker].qty += transaction.qty;
         memo[transaction.ticker].totalPrice += transaction.qty * transaction.price
         return memo
       },{})
-      for(var stock in stocksObj) {
+      for(let stock in stocksObj) {
         // subscribe for stock updates
         socket.emit('subscribe', stock);
         getOpeningPrice(stock);
         stockArr.push(stocksObj[stock]);
       }
       return stockArr
+    case BUY_STOCK: 
+      if(stocks.find(stock => stock.ticker === action.stock.ticker)){
+        stocks = stocks.map(stock => {
+          if(stock.ticker === action.stock.ticker){
+            stock.qty += action.stock.qty * 1
+            stock.totalPrice += (action.stock.qty * 1) * (action.stock.price * 1)
+          }
+          return stock
+        })
+      }else{
+        stocks = [...stocks, {qty:action.stock.qty * 1, totalPrice: (action.stock.qty * 1) * (action.stock.price * 1), ticker: action.stock.ticker}]
+        socket.emit('subscribe', action.stock.ticker);
+        getOpeningPrice(action.stock.ticker);
+      }
+
+      return stocks
     case STOCK_UPDATE:
-      return state.map(stock => stock.ticker === action.stock.symbol ? Object.assign({}, stock, action.stock) : stock)
+      return stocks.map(stock => stock.ticker === action.stock.symbol ? Object.assign({}, stock, action.stock) : stock)
     case SET_OPEN:
-      return state.map(stock => stock.ticker === action.stock.ticker ? Object.assign({}, stock, {openingPrice: action.stock.openingPrice}) : stock)
+      return stocks.map(stock => stock.ticker === action.stock.ticker ? Object.assign({}, stock, {openingPrice: action.stock.openingPrice}) : stock)
     default:
-      return []
+      return stocks
   }
 }
 
 
+const transactionReducer = (transactions = [], action) => {
+  switch (action.type) {
+    case GET_TRANSACTIONS:
+      return action.transactions
+    case BUY_STOCK:
+      return [...transactions, action.stock]
+    default:
+      return transactions
+  }
+}
+
 // REDUCE COMBINER AND STORE EXPORTER
 const reducer = combineReducers({
-  user: userReducer,
   stocks: stockReducer,
+  user: userReducer,
   transactions: transactionReducer
 })
 
 
-const store = createStore(reducer, applyMiddleware(thunk, logger))
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
 export default store;

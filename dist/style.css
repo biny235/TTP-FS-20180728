@@ -16,6 +16,7 @@
 .dashboard{
   display: grid;
   grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
 }
 
 .container{
@@ -64,6 +65,6 @@ i {
 }
 
 .arrow-default {
-  transform: rotate(45deg);
+  transform: rotate(-45deg);
   border-color: grey;
 }

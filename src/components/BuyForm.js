@@ -20,7 +20,7 @@ class BuyForm extends React.Component{
 
   onChange(ev){
     this.setState({[ev.target.name]: ev.target.value})
-    if(ev.target.name === 'ticker') this.getQuoute(ev.target.value)
+    if(ev.target.name === 'ticker' && ev.target.value) this.getQuoute(ev.target.value)
   }
 
   getQuoute(ticker){

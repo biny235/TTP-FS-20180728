@@ -6,7 +6,10 @@ const Transaction = conn.define('transaction', {
     type: Sequelize.ENUM('BUY', 'SELL') 
   },
   qty:{
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    set(val){
+      this.setDataValue('qty', val * 1)
+    }
   },
   time: {
     type: Sequelize.DATE,

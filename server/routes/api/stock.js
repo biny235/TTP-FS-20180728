@@ -18,6 +18,7 @@ router.post('/buy', auth, (req, res, next)=>{
   req.user.addTransaction(Object.assign({type: 'BUY'}, req.body))
     .then(transaction => {
       if(!transaction) throw 'error'
+      console.log(transaction)
       res.send(transaction);    
     })
     .catch(next)
