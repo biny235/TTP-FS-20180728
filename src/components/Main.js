@@ -1,5 +1,5 @@
 import React from 'React';
-import { Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import { checkUser } from '../store'
@@ -19,13 +19,17 @@ class Main extends React.Component{
     const { user } = this.props;
 
     return(
-      <div>
-        <Route component={NavBar}/>
-          <div className='container'>
-            <Route path='/transactions' exact render={() => <CheckLogin user={user} component={<Transactions />}/>} />
-            <Route path='/' exact render={()=> <CheckLogin user={user} component={<Dashboard />}/>} />
+      <Router>
+        <div>
+          <Route component={NavBar}/>
+            <div className='container'>
+              <Switch>
+                <Route path='/transactions' exact render={() => <CheckLogin user={user} component={<Transactions />}/>} />
+                <Route path='/' exact render={()=> <CheckLogin user={user} component={<Dashboard />}/>} />
+              </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     )
   }
 }
