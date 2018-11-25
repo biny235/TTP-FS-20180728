@@ -22,4 +22,12 @@ app.get('/', (req, res, next) => {
 
 })
 
+
+app.use((err, req, res, next) => {
+  const message = err.errors && err.errors[0].message;
+  err.message = message || err.message;
+  console.log(err.message)
+  res.status(err.status || 500).send(err.message || 'Internal Server Error');
+});
+
 module.exports = app;

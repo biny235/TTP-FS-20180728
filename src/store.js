@@ -26,6 +26,7 @@ export const login = user => {
         window.localStorage.setItem('token', token)
         dispatch(authenticateUser)
       })
+      .catch(err => console.log(err))
   }
 }
 
@@ -35,6 +36,10 @@ export const authenticateUser = dispatch =>{
     .then(user => {
       dispatch({type: LOGIN, user});
       dispatch(getTransactions);
+    })
+    .catch(err => {
+      console.log("could not authenticate user")
+      window.localStorage.clear()
     })
 }
 
@@ -83,14 +88,14 @@ export const buyStock = stock => {
 
 socket.on('message', stock => {
   stock = JSON.parse(stock)
+  console.log(stock)
   store.dispatch({type: STOCK_UPDATE, stock})
 })
 
 const getOpeningPrice = (_stock) => {
-  axios.get(`/api/stock/openingprice/${_stock}`)
+  axios.get(`/api/stock/quote/${_stock}`)
     .then(res => res.data)
-    .then(({openingPrice}) => {
-      const stock = {ticker:_stock, openingPrice}
+    .then((stock) => {
       store.dispatch({type: SET_OPEN, stock})
     })
 }
@@ -124,7 +129,7 @@ const stockReducer = (stocks = [], action) =>{
           return stock
         })
       }else{
-        stocks = [...stocks, {qty:action.stock.qty * 1, totalPrice: (action.stock.qty * 1) * (action.stock.price * 1), ticker: action.stock.ticker}]
+        stocks = [...stocks, {qty: action.stock.qty * 1, totalPrice: (action.stock.qty * 1) * (action.stock.price * 1), ticker: action.stock.ticker}]
         socket.emit('subscribe', action.stock.ticker);
         getOpeningPrice(action.stock.ticker);
       }
@@ -133,7 +138,7 @@ const stockReducer = (stocks = [], action) =>{
     case STOCK_UPDATE:
       return stocks.map(stock => stock.ticker === action.stock.symbol ? Object.assign({}, stock, action.stock) : stock)
     case SET_OPEN:
-      return stocks.map(stock => stock.ticker === action.stock.ticker ? Object.assign({}, stock, {openingPrice: action.stock.openingPrice}) : stock)
+      return stocks.map(stock => stock.ticker === action.stock.symbol ? Object.assign({}, stock, action.stock) : stock)
     default:
       return stocks
   }

@@ -6,6 +6,7 @@ import { checkUser } from '../store'
 
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Transactions from './Transactions';
 
 class Main extends React.Component{
   constructor(props){
@@ -18,14 +19,20 @@ class Main extends React.Component{
 
     return(
       <div className='container'>
-      
-        {user.email ? 
-          <Dashboard />
-          :
-          <Login />
-        }
+        <Switch>
+          <Route path='/' exact render={()=> <CheckLogin user={user} component={<Dashboard />}/>} />
+          <Route path='/transactions' exact render={() => <CheckLogin user={user} component={<Transactions />}/>} />
+        </Switch>
       </div>
     )
+  }
+}
+
+const CheckLogin = ({user, component})=>{
+  if(user.email){
+    return component
+  }else{
+    return <Login />
   }
 }
 

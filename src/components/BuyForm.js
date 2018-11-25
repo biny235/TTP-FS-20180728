@@ -29,7 +29,7 @@ class BuyForm extends React.Component{
       .then(info => {
         this.setState({ticker: info.symbol, price: info.latestPrice})
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log("Can't find that symbol"))
   }
 
   onClick(){

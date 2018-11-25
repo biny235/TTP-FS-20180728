@@ -5,7 +5,7 @@ import StockRow from './StockRow';
 
 const Portfolio = (props)=>{
 
-  const {stocks, portfolioBalance} = props
+  const {stocks} = props
 
   return(
     <div className='portfolio'>

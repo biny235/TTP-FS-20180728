@@ -13,18 +13,17 @@ const StockRow = ({ stock })=>{
 
 const currentTotal = (stock)=>{
 
-  return ((stock.lastSalePrice * 1) * stock.qty).toFixed(2)
+  return ((stock.bidPrice * 1) * stock.qty).toFixed(2)
+  
 }
 
 const gainOrLoss = (stock)=>{
-  stock.openingPrice = stock.openingPrice || 0
-  stock.lastSalePrice = stock.lastSalePrice || 0
-  if(stock.lastSalePrice.toFixed(2) < stock.openingPrice.toFixed(2)){
+  stock.open = stock.open || 0
+  stock.bidPrice = stock.bidPrice || stock.iexBidPrice || stock.latestPrice || 0
+  if(stock.bidPrice.toFixed(2) < stock.open.toFixed(2)){
     return 'loss'
-  }else if(stock.lastSalePrice.toFixed(2) > stock.openingPrice.toFixed(2)){
+  }else if(stock.bidPrice.toFixed(2) > stock.open.toFixed(2)){
     return 'gain'
-  }else{
-    return 'default'
   }
 }
 
