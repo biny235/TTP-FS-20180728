@@ -15,7 +15,7 @@ class Dashboard extends React.Component{
     return(
       <div className='dashboard'>
         <div>
-          <h4>Portfolio: (${portfolioBalance.toFixed(2)})</h4>
+          <h4>Portfolio: ${portfolioBalance.toFixed(2)}</h4>
           <Portfolio />
         </div>
         <div className='buy-form'> 

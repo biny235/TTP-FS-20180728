@@ -11,7 +11,8 @@ class BuyForm extends React.Component{
       ticker: '',
       qty: 0,
       price: 0,
-      validStock: false
+      validStock: false,
+      companyName: ''
     }
 
     this.onChange = this.onChange.bind(this)
@@ -28,11 +29,12 @@ class BuyForm extends React.Component{
     axios.get(`/api/stock/quote/${ticker}`)
       .then(res => res.data)
       .then(info => {
-        if(!info) this.setState({validStock: false})
-
-        this.setState({validStock: true, ticker: info.symbol, price: info.latestPrice})
+        this.setState({companyName: info.companyName, validStock: true, ticker: info.symbol, price: info.latestPrice})
       })
-      .catch(err => console.log("Can't find that symbol"))
+      .catch(err => {
+        this.setState({validStock: false, price:0, companyName: info.companyName})
+        console.log("Can't find that symbol")
+      })
   }
 
   onClick(){
@@ -40,12 +42,14 @@ class BuyForm extends React.Component{
     this.setState({
       ticker: '',
       qty: 0,
-      price: 0
+      price: 0,
+      validStock: false,
+      companyName: ''
     })
   }
 
   render(){
-    const { price, qty, ticker, validStock } = this.state;
+    const { price, qty, ticker, validStock, companyName } = this.state;
     const { onChange, onClick } = this;
     const { balance } = this.props;
     const canAfford = balance > (price * qty);
@@ -57,6 +61,14 @@ class BuyForm extends React.Component{
           </div>
           <div className='col-form-label buy-form-label'>
             <label>Current Price: ${(price * 1).toFixed(2)}</label>
+          </div>
+        </div>
+        <div className='form-row'>
+          <div className='col-form-label'>
+            <label>Company Name:</label>
+          </div>
+          <div className='col-form-label mr-auto'>
+            <label>{companyName}</label>
           </div>
         </div>
         <div className='form-row'>
