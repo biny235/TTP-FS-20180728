@@ -12,7 +12,7 @@ const Transaction = (props)=>{
         <div>Type</div>
         <div>Symbol</div>
         <div>Qty</div>
-        <div>Price</div>
+        <div>Total Purchase Price</div>
       </div>
       {transactions.map(transaction => {
         return <TransactionRow transaction={transaction} key={transaction.id}/>

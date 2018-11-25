@@ -1,3 +1,7 @@
+*{
+  font-family: 'Open Sans', sans-serif;
+}
+
 .buy-form{
   padding: 10px;
 	border-left: .5px solid lightgray;
@@ -44,3 +48,12 @@
   border-bottom: 1px solid lightgray;
 }
 
+
+.navbar-brand img{
+  height: 40px;
+  width: auto;
+}
+
+.navbar-links{
+  float: right;
+}

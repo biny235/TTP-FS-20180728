@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-
 import BuyForm from './BuyForm';
 import Portfolio from './Portfolio';
 
