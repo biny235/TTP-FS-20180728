@@ -22,12 +22,28 @@ export const login = user => {
       .post(`/api/user/login`, {user})
       .then(res => res.data)
       .then(token =>{
-        axios.defaults.headers.common.token = token;
-        window.localStorage.setItem('token', token)
+        setToken(token)
         dispatch(authenticateUser)
       })
       .catch(err => console.log(err))
   }
+}
+
+export const register = (user) => {
+  return dispatch => {
+    return axios
+      .post('/api/user/register', { user })
+      .then(res => res.data)
+        .then(token => {
+          setToken(token)
+          dispatch(authenticateUser)
+        })
+  }
+}
+
+const setToken = (token) => {
+  axios.defaults.headers.common.token = token;
+  window.localStorage.setItem('token', token)
 }
 
 export const authenticateUser = dispatch =>{
@@ -45,6 +61,10 @@ export const authenticateUser = dispatch =>{
 
 export const checkUser = dispatch => {
   if(token) dispatch(authenticateUser)
+}
+
+export const logout = ()=>{
+  store.dispatch({type: LOGOUT})
 }
 
 

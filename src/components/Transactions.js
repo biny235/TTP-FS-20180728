@@ -8,6 +8,7 @@ const Transaction = (props)=>{
 
   return(
     <div className='transactions'>
+      <h4>Transactions</h4>
       <div className='transaction-row'>
         <div>Type</div>
         <div>Symbol</div>

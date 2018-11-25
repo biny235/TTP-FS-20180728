@@ -10,7 +10,8 @@ class BuyForm extends React.Component{
     this.state = {
       ticker: '',
       qty: 0,
-      price: 0
+      price: 0,
+      validStock: false
     }
 
     this.onChange = this.onChange.bind(this)
@@ -27,7 +28,9 @@ class BuyForm extends React.Component{
     axios.get(`/api/stock/quote/${ticker}`)
       .then(res => res.data)
       .then(info => {
-        this.setState({ticker: info.symbol, price: info.latestPrice})
+        if(!info) this.setState({validStock: false})
+
+        this.setState({validStock: true, ticker: info.symbol, price: info.latestPrice})
       })
       .catch(err => console.log("Can't find that symbol"))
   }
@@ -42,7 +45,7 @@ class BuyForm extends React.Component{
   }
 
   render(){
-    const { price, qty, ticker } = this.state;
+    const { price, qty, ticker, validStock } = this.state;
     const { onChange, onClick } = this;
     const { balance } = this.props;
     const canAfford = balance > (price * qty);
@@ -77,7 +80,7 @@ class BuyForm extends React.Component{
           <div className='col'> 
               <button 
               className={`btn btn-block ${canAfford ? 'btn-success' : 'btn-danger'}`} 
-              disabled={!ticker || qty <= 0 || !canAfford}
+              disabled={!validStock || !ticker || qty <= 0 || !canAfford}
               onClick={onClick}
               >
                 {canAfford ? 'Buy' : 'Low Balance'}

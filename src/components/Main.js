@@ -21,7 +21,7 @@ class Main extends React.Component{
     return(
       <Router>
         <div>
-          <Route component={NavBar}/>
+          <NavBar />
             <div className='container'>
               <Switch>
                 <Route path='/transactions' exact render={() => <CheckLogin user={user} component={<Transactions />}/>} />
@@ -34,11 +34,11 @@ class Main extends React.Component{
   }
 }
 
-const CheckLogin = ({user, component})=>{
-  if(user.email){
-    return component
-  }else{
+const CheckLogin = ({ user, component }) => {
+  if(!user.email || !window.localStorage.getItem('token')){
     return <Login />
+  }else{
+    return component
   }
 }
 

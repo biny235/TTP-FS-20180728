@@ -57,3 +57,11 @@
 .navbar-links{
   float: right;
 }
+
+.login{
+  margin: -1px -0.5px;
+  border: .5px solid #dee2e6;
+  padding: 5%;
+  background: white;
+  border-radius: 0 5px 5px;
+}

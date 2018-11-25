@@ -2,9 +2,9 @@ const router = require('express').Router();
 const { User, Transaction } = require('../../db').models;
 const { auth } = require('../auth');
 
-router.post('/signup', (req, res, next) => {
-  const { password } = req.body
-  User.create(req.body)
+router.post('/register', (req, res, next) => {
+  const { password } = req.body.user
+  User.create(req.body.user)
     .then(user => {
       const credentials = { email: user.email, password }
       return User.authenticate(credentials)

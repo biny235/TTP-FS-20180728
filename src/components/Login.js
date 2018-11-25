@@ -1,51 +1,44 @@
 import React from 'react';
-import {connect} from 'react-redux';
 
-import { login } from '../store'
+import LoginForm from './LoginForm'
+import RegisterForm from './RegisterForm'
 
 class Login extends React.Component{
   constructor(){
     super()
     this.state = {
-      email: '',
-      password: ''
+      login: true
     }
-    this.onChange = this.onChange.bind(this);
-    this.submitUser = this.submitUser.bind(this);
-  };
+    this.changeState = this.changeState.bind(this)
+  }
 
-  onChange(ev){
-    this.setState({[ev.target.name]: ev.target.value})
-  };
-
-  submitUser(){
-    this.props.login(this.state)
-  };
+  changeState(){
+    this.setState({login: !this.state.login})
+  }
 
   render(){
-    const { email, password } = this.state;
-    const {onChange, submitUser} = this;
-
-    return(
+    const { login } = this.state;
+    const { changeState } = this
+    return (
       <div className='jumbotron'>
-        <div className='form-group'>
-          <input name='email' className='form-control' onChange={onChange}/>
-          <input name='password' type='password' className='form-control' onChange={onChange}/>
-          <button type='submit' 
-          className='btn btn-success' 
-          onClick={submitUser}
-          disabled={!email || !password}
-          >Submit</button>
+        <ul className='nav nav-tabs center'>
+          <li className='nav-item'>
+            { this.state.login ? <span className='nav-link active'>Login</span> : 
+              <a className='nav-link' onClick={changeState}>Login</a>
+            }
+          </li>
+          <li className='nav-item'>
+            { !this.state.login ? <span className='nav-link active'>Register</span> : 
+              <a className='nav-link' onClick={changeState}>Register</a>
+            }
+          </li>
+        </ul>
+        <div className='login'>
+          { login ? <LoginForm /> : <RegisterForm /> }
         </div>
       </div>
     )
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return{
-    login: user => dispatch(login(user))
-  }
-}
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login
