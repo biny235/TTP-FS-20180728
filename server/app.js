@@ -1,8 +1,16 @@
 const express = require('express');
 const path = require('path')
 const app = express();
-const config = require('../config.json');
-process.env = Object.assign(process.env, config);
+
+try{
+  const config = require('../config.json');
+  process.env = Object.assign(process.env, config);
+}catch(e){
+  process.env.SECRET = 'secret'
+  console.log(e.message);
+}
+
+
 
 const db = require('./db');
 
