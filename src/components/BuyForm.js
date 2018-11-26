@@ -78,7 +78,6 @@ class BuyForm extends React.Component{
             <input 
             className='form-control' 
             type='number'
-            pattern="[0-9]*"
             min='1'
             step='1'
             placeholder='Qty' 
