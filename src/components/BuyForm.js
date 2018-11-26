@@ -41,13 +41,15 @@ class BuyForm extends React.Component{
 
   onClick(){
     this.props.buyStock(this.state)
-    this.setState({
-      ticker: '',
-      qty: 0,
-      price: 0,
-      validStock: false,
-      companyName: ''
-    })
+      .then(()=>{
+        this.setState({
+          ticker: '',
+          qty: 0,
+          price: 0,
+          validStock: false,
+          companyName: ''
+        })
+      })
   }
 
   render(){
@@ -81,7 +83,8 @@ class BuyForm extends React.Component{
             min='1'
             step='1'
             placeholder='Qty' 
-            name='qty' 
+            name='qty'
+            value={qty}
             onChange={onChange}/>
           </div>
           <div className='col-form-label buy-form-label'> 

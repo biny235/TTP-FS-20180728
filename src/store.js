@@ -94,7 +94,7 @@ export const getTransactions = dispatch => {
 
 export const buyStock = stock => {
   return dispatch => {
-    axios.post(`/api/stock/buy`, stock)
+    return axios.post(`/api/stock/buy`, stock)
       .then(res => res.data)
       .then(transaction => {
         dispatch({type: UPDATE_BALANCE, transaction})
