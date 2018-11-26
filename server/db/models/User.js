@@ -63,7 +63,8 @@ User.authenticate = function (user){
   const { email, password } = user;
   return this.findOne({ where: {email} })
     .then(user => {
-      if(!user.validatePassword(password)) throw {status: 401, message: 'Invalid Password'}
+      if(!user) throw {status: 401, message: 'Invalid Email or Password'}
+      if(!user.validatePassword(password)) throw {status: 401, message: 'Invalid Email or Password'}
       return jwt.encode({id: user.id}, secret)
     })
 }
@@ -86,7 +87,6 @@ User.exchangeToken = function(token){
 }
 
 User.prototype.addTransaction = function(transaction){
-  let _transaction
   return Transaction.create(Object.assign(transaction, {userId: this.id}))
     .then(transaction => {
       if(transaction.type = 'BUY'){
@@ -94,8 +94,6 @@ User.prototype.addTransaction = function(transaction){
       }else if(transaction.type = 'SELL'){
         this.balance += transaction.qty * (transaction.price * 1)
       }
-
-      _transaction = transaction
       return this.save()
     })
     .then(()=>{

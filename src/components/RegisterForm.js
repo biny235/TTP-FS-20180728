@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import { register } from '../store'
+import Error from './Error';
 
 class Register extends React.Component{
   constructor(){
@@ -10,10 +11,12 @@ class Register extends React.Component{
       firstName: '',
       lastName: '',
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
     this.onChange = this.onChange.bind(this);
     this.submitUser = this.submitUser.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
   };
 
   onChange(ev){
@@ -22,11 +25,16 @@ class Register extends React.Component{
 
   submitUser(){
     this.props.register(this.state)
+      .catch(err => this.setState({error: err.response.data}))
   };
+  clearErrors(){
+    this.setState({error: ''})
+  }
+
 
   render(){
-    const { firstName, lastName, email, password } = this.state;
-    const {onChange, submitUser} = this;
+    const { firstName, lastName, email, password, error } = this.state;
+    const {onChange, submitUser, clearErrors} = this;
 
     return(
         <div>
@@ -45,6 +53,9 @@ class Register extends React.Component{
             <div className='col'>
               <input name='password' type='password' className='form-control' placeholder='Password' onChange={onChange}/>
             </div>
+          </div>
+          <div>
+            {error ? <Error error={error} clearErrors={clearErrors}/> : null}
           </div>
           <button type='submit' 
           className='btn btn-success btn-block' 

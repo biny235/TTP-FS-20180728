@@ -1,17 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { login } from '../store'
+import { login } from '../store';
+import Error from './Error';
 
 class LoginForm extends React.Component{
   constructor(){
     super()
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
     this.onChange = this.onChange.bind(this);
     this.submitUser = this.submitUser.bind(this);
+    this.clearErrors = this.clearErrors.bind(this);
   };
 
   onChange(ev){
@@ -20,16 +23,24 @@ class LoginForm extends React.Component{
 
   submitUser(){
     this.props.login(this.state)
+      .catch(err => this.setState({error: err.response.data}))
   };
 
+  clearErrors(){
+    this.setState({error: ''})
+  }
+
   render(){
-    const { email, password } = this.state;
-    const {onChange, submitUser} = this;
+    const { email, password, error } = this.state;
+    const {onChange, submitUser, clearErrors} = this;
 
     return(  
       <div className='form-group'>
         <input name='email' className='form-control' placeholder='e-mail' onChange={onChange}/>
         <input name='password' type='password' className='form-control' placeholder='Password' onChange={onChange}/>
+        <div>
+            {error ? <Error error={error} clearErrors={clearErrors}/> : null}
+        </div>
         <button
         className='btn btn-success btn-block' 
         onClick={submitUser}

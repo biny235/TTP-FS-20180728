@@ -25,7 +25,6 @@ export const login = user => {
         setToken(token)
         dispatch(authenticateUser)
       })
-      .catch(err => console.log(err))
   }
 }
 
@@ -34,10 +33,10 @@ export const register = (user) => {
     return axios
       .post('/api/user/register', { user })
       .then(res => res.data)
-        .then(token => {
-          setToken(token)
-          dispatch(authenticateUser)
-        })
+      .then(token => {
+        setToken(token)
+        dispatch(authenticateUser)
+      })
   }
 }
 
