@@ -32,8 +32,7 @@ class BuyForm extends React.Component{
         this.setState({companyName: info.companyName, validStock: true, ticker: info.symbol, price: info.latestPrice})
       })
       .catch(err => {
-        this.setState({validStock: false, price:0, companyName: info.companyName})
-        console.log("Can't find that symbol")
+        this.setState({validStock: false, price:0, companyName: 'invalid symbol'})
       })
   }
 
