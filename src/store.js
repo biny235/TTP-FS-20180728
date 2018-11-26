@@ -1,7 +1,6 @@
-import {createStore, applyMiddlware, combineReducers, applyMiddleware } from 'redux';
+import {createStore, combineReducers, applyMiddleware } from 'redux';
 import axios from 'axios';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import socket from './sockets';
 
