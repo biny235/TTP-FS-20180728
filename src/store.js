@@ -106,7 +106,6 @@ export const buyStock = stock => {
 
 socket.on('message', stock => {
   stock = JSON.parse(stock)
-  console.log(stock)
   store.dispatch({type: STOCK_UPDATE, stock})
 })
 

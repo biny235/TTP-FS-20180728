@@ -21,6 +21,9 @@ class BuyForm extends React.Component{
   }
 
   onChange(ev){
+    if(ev.target.name === 'qty') {
+      ev.target.value = Math.floor(ev.target.value)
+    }
     this.setState({[ev.target.name]: ev.target.value})
     if(ev.target.name === 'ticker' && ev.target.value) this.getQuoute(ev.target.value)
   }
@@ -32,7 +35,7 @@ class BuyForm extends React.Component{
         this.setState({companyName: info.companyName, validStock: true, ticker: info.symbol, price: info.latestPrice})
       })
       .catch(err => {
-        this.setState({validStock: false, price:0, companyName: 'invalid symbol'})
+        this.setState({validStock: false, price:0, companyName: 'Invalid Symbol'})
       })
   }
 
@@ -74,10 +77,10 @@ class BuyForm extends React.Component{
           <div className='col'>
             <input 
             className='form-control' 
-            type='number' 
+            type='number'
+            pattern="[0-9]*"
             min='1'
             step='1'
-            value={qty} 
             placeholder='Qty' 
             name='qty' 
             onChange={onChange}/>

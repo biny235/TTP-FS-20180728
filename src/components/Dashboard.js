@@ -15,11 +15,11 @@ class Dashboard extends React.Component{
     return(
       <div className='dashboard'>
         <div>
-          <h4>Portfolio: ${portfolioBalance.toFixed(2)}</h4>
+          <h4>Portfolio: ${portfolioBalance}</h4>
           <Portfolio />
         </div>
         <div className='buy-form'> 
-          <h4>Current Balance: ${balance.toFixed(2)}</h4>
+          <h4>Current Balance: ${balance}</h4>
           <BuyForm />
         </div>
       </div>)
@@ -29,11 +29,13 @@ class Dashboard extends React.Component{
 
 const mapStateToProps = ({user, stocks}) => {
   const portfolioBalance = stocks.reduce((ttl, stock)=>{
-    return ttl += stock.totalPrice
-  },0)
+    stock.bidPrice = stock.bidPrice || stock.iexBidPrice || stock.latestPrice || 0
+
+    return ttl += ((stock.bidPrice * 1) * stock.qty)
+  },0).toFixed(2)
 
   return{
-    balance: user.balance * 1,
+    balance: (user.balance * 1).toFixed(2),
     portfolioBalance
   }
 }

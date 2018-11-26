@@ -87,6 +87,8 @@ User.exchangeToken = function(token){
 }
 
 User.prototype.addTransaction = function(transaction){
+
+  let _transaction
   return Transaction.create(Object.assign(transaction, {userId: this.id}))
     .then(transaction => {
       if(transaction.type = 'BUY'){
@@ -94,10 +96,11 @@ User.prototype.addTransaction = function(transaction){
       }else if(transaction.type = 'SELL'){
         this.balance += transaction.qty * (transaction.price * 1)
       }
+      _transaction = transaction.dataValues
       return this.save()
     })
     .then(()=>{
-      return Object.assign(transaction, {balance: this.getBalance()})
+      return Object.assign(_transaction, {balance: this.getBalance()})
     })
 
 }

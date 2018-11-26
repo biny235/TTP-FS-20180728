@@ -8,9 +8,9 @@ Transaction.belongsTo(User)
 
 
 const syncAndSeed = ()=>{
-  return conn.sync({force: process.env.DB_FORCE})
+  return conn.sync({force: !process.env.DB_FORCE})
     .then(() => {
-      if(process.env.DB_FORCE){
+      if(!process.env.DB_FORCE){
         return User.create({
         email: 'test@test.com',
         password: 'password',
