@@ -17,6 +17,10 @@
   text-align: right;
 }
 
+.buy-form-container{
+  margin-top: 20px
+}
+
 .dashboard{
   display: grid;
   grid-template-columns: 1fr 1fr;
