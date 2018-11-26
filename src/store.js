@@ -52,7 +52,6 @@ export const authenticateUser = dispatch =>{
       dispatch(getTransactions);
     })
     .catch(err => {
-      console.log("could not authenticate user")
       window.localStorage.clear()
     })
 }
