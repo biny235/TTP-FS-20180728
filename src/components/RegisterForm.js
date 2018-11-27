@@ -23,7 +23,8 @@ class Register extends React.Component{
     this.setState({[ev.target.name]: ev.target.value})
   };
 
-  submitUser(){
+  submitUser(ev){
+    ev.preventDefault()
     this.props.register(this.state)
       .catch(err => this.setState({error: err.response.data}))
   };
@@ -37,7 +38,7 @@ class Register extends React.Component{
     const {onChange, submitUser, clearErrors} = this;
 
     return(
-        <div>
+        <form onSubmit={submitUser}>
           <div className='form-row'>
             <div className='col'>
               <input type='text' name='firstName' className='form-control' placeholder='First name' onChange={onChange}/>
@@ -62,7 +63,7 @@ class Register extends React.Component{
           onClick={submitUser}
           disabled={!firstName || !lastName || !email || !password}
           >Register</button>
-        </div>
+        </form>
     )
   }
 }

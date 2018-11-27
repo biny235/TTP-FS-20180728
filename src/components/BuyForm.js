@@ -39,7 +39,8 @@ class BuyForm extends React.Component{
       })
   }
 
-  onClick(){
+  onClick(ev){
+    ev.preventDefault()
     this.props.buyStock(this.state)
       .then(()=>{
         this.setState({
@@ -58,7 +59,7 @@ class BuyForm extends React.Component{
     const { balance } = this.props;
     const canAfford = balance > (price * qty);
     return (
-      <div className='buy-form-container'>
+      <form onSubmit={onClick} className='buy-form-container'>
         <div className='form-row'>
           <div className='col'>
             <input className='form-control' value={ticker} placeholder='Symbol' name='ticker' onChange={onChange}/>
@@ -103,7 +104,7 @@ class BuyForm extends React.Component{
               </button>
           </div>
         </div>
-      </div>
+      </form>
     )
   }
 

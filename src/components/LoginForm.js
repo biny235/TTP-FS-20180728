@@ -21,7 +21,8 @@ class LoginForm extends React.Component{
     this.setState({[ev.target.name]: ev.target.value})
   };
 
-  submitUser(){
+  submitUser(ev){
+    ev.preventDefault()
     this.props.login(this.state)
       .catch(err => this.setState({error: err.response.data}))
   };
@@ -35,7 +36,7 @@ class LoginForm extends React.Component{
     const {onChange, submitUser, clearErrors} = this;
 
     return(  
-      <div className='form-group'>
+      <form onSubmit={submitUser} className='form-group'>
         <input name='email' className='form-control' placeholder='e-mail' onChange={onChange}/>
         <input name='password' type='password' className='form-control' placeholder='Password' onChange={onChange}/>
         <div>
@@ -46,7 +47,7 @@ class LoginForm extends React.Component{
         onClick={submitUser}
         disabled={!email || !password}
         >Submit</button>
-      </div>
+      </form>
     )
   }
 }

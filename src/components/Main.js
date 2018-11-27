@@ -21,7 +21,7 @@ class Main extends React.Component{
     return(
       <Router>
         <div>
-          <NavBar />
+          <NavBar user={user}/>
             <div className='container'>
               <Switch>
                 <Route path='/transactions' exact render={() => <CheckLogin user={user} component={<Transactions />}/>} />
