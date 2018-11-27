@@ -6,7 +6,7 @@ const TransactionRow = ({ transaction })=>{
       <div >{transaction.type}</div>
       <div>{transaction.ticker}</div>
       <div>{transaction.qty}</div>
-      <div>${(transaction.price * 1) * (transaction.qty * 1) }</div>
+      <div>${((transaction.price * 1) * (transaction.qty * 1)).toFixed(2) }</div>
     </div>
   )
 }

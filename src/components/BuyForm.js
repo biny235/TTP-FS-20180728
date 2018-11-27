@@ -32,7 +32,7 @@ class BuyForm extends React.Component{
     axios.get(`/api/stock/quote/${ticker}`)
       .then(res => res.data)
       .then(info => {
-        this.setState({companyName: info.companyName, validStock: true, ticker: info.symbol, price: info.latestPrice})
+        this.setState({companyName: info.companyName, validStock: true, ticker: info.symbol, price: info.latestPrice.toFixed(2)})
       })
       .catch(err => {
         this.setState({validStock: false, price:0, companyName: 'Invalid Symbol'})

@@ -16,7 +16,10 @@ const Transaction = conn.define('transaction', {
     defaultValue: Date.now()
   },
   price: {
-    type: Sequelize.DECIMAL
+    type: Sequelize.DECIMAL,
+    set(val){
+      this.setDataValue('price', (val * 1).toFixed(2))
+    }
   },
   ticker: {
     type: Sequelize.STRING
