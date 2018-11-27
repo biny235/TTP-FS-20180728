@@ -69,3 +69,24 @@
   background: white;
   border-radius: 0 5px 5px;
 }
+
+@media only screen and (max-width: 800px) {
+
+  
+.dashboard{
+  grid-template-columns:1fr;
+  row-gap: 20px;
+}
+.portfolio{
+  border-bottom: 1px solid lightgray;
+}
+.buy-form{
+	border-left: 0px solid lightgray;
+}
+
+.transaction-row{
+ font-size: 1em;
+ justify-content: center;
+}
+ 
+}

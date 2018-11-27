@@ -14,7 +14,7 @@ class Dashboard extends React.Component{
     const { balance, portfolioBalance } = this.props
     return(
       <div className='dashboard'>
-        <div>
+        <div className='portfolio'>
           <h4>Portfolio: ${portfolioBalance}</h4>
           <Portfolio />
         </div>
